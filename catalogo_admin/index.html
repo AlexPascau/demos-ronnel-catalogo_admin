@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Catálogo Ronnel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="./images/icon-192.png">
+    <meta name="theme-color" content="#34495e">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="./images/icon-512.png" alt="Logo Ronnel" class="logo">
+                    <div>
+                        <h1>Panel Administrativo</h1>
+                        <p>Gestión de Catálogo de Productos</p>
+                    </div>
+                </div>
+                <button id="addProductBtn" class="btn btn-primary">
+                    ➕ Nuevo Producto
+                </button>
+            </div>
+        </header>
+
+        <!-- Estadísticas -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <h3>Total Productos</h3>
+                <span id="totalProducts">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Precios Modificados</h3>
+                <span id="modifiedPrices">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Con Múltiples Imágenes</h3>
+                <span id="multiImageProducts">0</span>
+            </div>
+        </section>
+
+        <!-- Filtros y Búsqueda -->
+        <section class="filters-section">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <button id="searchBtn">🔍</button>
+            </div>
+            <div class="filter-group">
+                <select id="categoryFilter">
+                    <option value="all">Todas las categorías</option>
+                </select>
+                <select id="sortSelect">
+                    <option value="name">Ordenar por nombre</option>
+                    <option value="price">Ordenar por precio</option>
+                    <option value="recent">Más recientes</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Lista de Productos -->
+        <main class="products-admin">
+            <div id="productsList" class="products-list">
+                <!-- Los productos se cargarán aquí -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para Editar/Agregar Producto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modalTitle">Editar Producto</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto:</label>
+                        <input type="text" id="productName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productCategory">Categoría:</label>
+                        <input type="text" id="productCategory" list="categories" required>
+                        <datalist id="categories">
+                            <option value="Electrónicos">
+                            <option value="Oficina">
+                            <option value="Tecnología">
+                            <option value="Hogar">
+                        </datalist>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productPrice">Precio Actual:</label>
+                            <input type="number" id="productPrice" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="oldPrice">Precio Anterior (opcional):</label>
+                            <input type="number" id="oldPrice" step="0.01" placeholder="Dejar vacío si no hay descuento">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDescription">Descripción:</label>
+                        <textarea id="productDescription" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productSpecs">Especificaciones (separar por comas):</label>
+                        <textarea id="productSpecs" rows="3" placeholder="Procesador i7, 16GB RAM, SSD 512GB..."></textarea>
+                    </div>
+
+                    <!-- Gestión de Imágenes -->
+                    <div class="form-group">
+                        <label>Imágenes del Producto:</label>
+                        <div id="imageGallery" class="image-gallery">
+                            <!-- Las imágenes se cargarán aquí -->
+                        </div>
+                        <div class="image-actions">
+                            <button type="button" id="addImageBtn" class="btn btn-secondary">
+                                📷 Agregar Imagen
+                            </button>
+                            <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="deleteProductBtn" class="btn btn-danger">
+                            🗑️ Eliminar Producto
+                        </button>
+                        <div>
+                            <button type="button" id="cancelBtn" class="btn btn-secondary">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                💾 Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirmCancel" class="btn btn-secondary">Cancelar</button>
+                <button id="confirmDelete" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/image-editor.js"></script>
+    <script src="js/product-manager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
